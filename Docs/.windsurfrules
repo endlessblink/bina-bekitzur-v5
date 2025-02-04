@@ -1,0 +1,109 @@
+# .cursorrules
+
+SITE_STRUCTURE:
+  NAME: "בינה בקיצור"
+  THEME: 
+    - BACKGROUND: "gradient from black to dark purple"
+    - PRIMARY_COLOR: "purple-600"
+    - STYLE: "modern, minimalist, aesthetic"
+    - DIRECTION: "RTL"
+
+LAYOUT:
+  HEADER:
+    - LOGO: "בינה בקיצור"
+    - NAV_ITEMS:
+      - "עמוד הבית"
+      - "ניוזלטר בינה בקיצור" [dropdown: "הרשמה"]
+      - "פודקאסט חופרים בינה"
+      - "השוואת מודלים"
+      - "עוד תוכן" [dropdown: "מדריכים, עבודות, סדנאות והרצאות"]
+      - "אודות"
+
+  HOMEPAGE:
+    HERO:
+      - TITLE: "בינה בקיצור"
+      - SUBTITLE: "פלטפורמה מודרנית להצגת יישומי AI וכלים חדשניים בתחום הבינה המלאכותית"
+    
+    FEATURE_CARDS:
+      - COUNT: 4
+      - ITEMS:
+        - "מדריכים"
+        - "השוואת כלים"
+        - "פודקאסט חופרים בינה"
+        - "ניוזלטר בינה בקיצור"
+
+    MODELS_CAROUSEL:
+      - TYPE: "infinite loop"
+      - SPEED: "slow and smooth"
+      - ITEMS:
+        - STRUCTURE: [favicon, name, short_description]
+        - ANIMATION: "fade transition"
+
+    CONTENT_SECTIONS:
+      - LATEST_PODCAST:
+        - RSS_FEED: true
+        - PLAYER: true
+      - LATEST_NEWSLETTER:
+        - SUMMARY: true
+        - API: "mailerlite"
+      - YOUTUBE_VIDEOS:
+        - COUNT: 4
+        - SOURCE: "playlist"
+
+DATABASE_SCHEMA:
+  MODELS:
+    - name: string
+    - description: text
+    - features: array
+    - pricing: object
+    - pros: array
+    - cons: array
+    - guide_url: string [optional]
+
+  NEWSLETTER:
+    - title: string
+    - summary: text
+    - published_date: date
+    - mailerlite_id: string
+
+  WORKSHOPS:
+    - title: string
+    - description: text
+    - details: json
+    - dates: array
+
+CORE_FEATURES:
+  - MODELS_COMPARISON:
+    - FILTERS:
+      - search
+      - tags
+      - price_range
+    - DISPLAY: "card grid"
+    
+  - NEWSLETTER:
+    - ARCHIVE: true
+    - SUBSCRIPTION_FORM: true
+    - API: "mailerlite"
+
+  - PODCAST:
+    - PLAYER: true
+    - EPISODES_LIST: true
+    - RSS_INTEGRATION: true
+
+  - CONTENT:
+    - GUIDES: "youtube playlist"
+    - PROJECTS: "youtube playlist"
+    - WORKSHOPS: "cards with details"
+
+RESTRICTIONS:
+  - NO_DARK_TEXT_ON_DARK_BACKGROUND
+  - MAINTAIN_RESPONSIVE_DESIGN
+  - KEEP_CONSISTENT_SPACING
+  - USE_HEBREW_INTERFACE
+  - FOLLOW_ACCESSIBILITY_GUIDELINES
+
+INTEGRATIONS:
+  - YouTube API
+  - Mailerlite API
+  - Spotify RSS Feed
+  - Neon Database
