@@ -1,7 +1,7 @@
 'use client';
 
 import { HTMLAttributes, forwardRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const cardVariants = cva(
@@ -27,11 +27,11 @@ const cardVariants = cva(
   }
 );
 
-interface CardProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {
+type CardBaseProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof cardVariants>;
+type CardMotionProps = HTMLMotionProps<'div'> & VariantProps<typeof cardVariants>;
+type CardProps = (CardBaseProps | CardMotionProps) & {
   isHoverable?: boolean;
-}
+};
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant, padding, isHoverable = false, children, ...props }, ref) => {
@@ -55,4 +55,4 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card';
 
-export { Card, cardVariants };
+export default Card;

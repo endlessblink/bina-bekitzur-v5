@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonHTMLAttributes, forwardRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
@@ -29,11 +29,12 @@ const buttonVariants = cva(
   }
 );
 
-interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  isLoading?: boolean;
-}
+type ButtonBaseProps = ButtonHTMLAttributes<HTMLButtonElement> & 
+  VariantProps<typeof buttonVariants> & {
+    isLoading?: boolean;
+  };
+
+type ButtonProps = Omit<HTMLMotionProps<'button'>, keyof ButtonBaseProps> & ButtonBaseProps;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, isLoading, children, ...props }, ref) => {
@@ -55,4 +56,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export default Button;

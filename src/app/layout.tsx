@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
-import "./globals.css";
+import './globals.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const rubik = Rubik({
   subsets: ['hebrew', 'latin'],
@@ -17,11 +19,14 @@ import Layout from "./components/layout/Layout";
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="he" dir="rtl" className={`${rubik.variable}`}>
+      <head>
+        <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+      </head>
       <body className={`${rubik.className} min-h-screen bg-gradient-to-b from-black via-purple-950 to-black`}>
         <Layout>{children}</Layout>
       </body>

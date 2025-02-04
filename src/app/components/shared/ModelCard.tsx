@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card } from './Card';
-import { Button } from './Button';
+import Button from './Button';
+import Card from './Card';
 
 interface ModelCardProps {
   model: {
@@ -21,7 +21,7 @@ interface ModelCardProps {
   };
 }
 
-export function ModelCard({ model }: ModelCardProps) {
+export default function ModelCard({ model }: ModelCardProps) {
   return (
     <Card isHoverable className="flex flex-col">
       <div className="flex items-start space-x-4 rtl:space-x-reverse p-6">
@@ -49,24 +49,28 @@ export function ModelCard({ model }: ModelCardProps) {
       <div className="mt-auto border-t border-gray-100 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize">
-              {model.pricing?.type === 'free' && (
-                <span className="text-green-700 bg-green-50 px-2 py-1 rounded-full">חינמי</span>
-              )}
-              {model.pricing?.type === 'paid' && (
-                <span className="text-purple-700 bg-purple-50 px-2 py-1 rounded-full">
-                  החל מ-{model.pricing.startingPrice}{model.pricing.currency}
-                </span>
-              )}
-              {model.pricing?.type === 'freemium' && (
-                <span className="text-blue-700 bg-blue-50 px-2 py-1 rounded-full">חינמי + פרימיום</span>
-              )}
-            </span>
+            {model.pricing && (
+              <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
+                {model.pricing.type === 'free' && (
+                  <span className="text-green-700 bg-green-50 px-2 py-1 rounded-full">חינם</span>
+                )}
+                {model.pricing.type === 'paid' && (
+                  <span className="text-purple-700 bg-purple-50 px-2 py-1 rounded-full">
+                    החל מ-{model.pricing.startingPrice}
+                    {model.pricing.currency}
+                  </span>
+                )}
+                {model.pricing.type === 'freemium' && (
+                  <span className="text-blue-700 bg-blue-50 px-2 py-1 rounded-full">חינמי + פרימיום</span>
+                )}
+              </span>
+            )}
           </div>
-          
           {model.websiteUrl && (
-            <Button variant="outline" size="sm" onClick={() => window.open(model.websiteUrl, '_blank')}>
-              בקר באתר
+            <Button variant="outline" size="sm" className="ml-auto rtl:mr-auto">
+              <Link href={model.websiteUrl} target="_blank" rel="noopener noreferrer">
+                בקר באתר
+              </Link>
             </Button>
           )}
         </div>
