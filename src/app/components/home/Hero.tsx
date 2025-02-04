@@ -38,8 +38,7 @@ const features = [
 
 export function Hero() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-black via-black via-30% via-deep-purple-950/50 via-70% to-deep-purple-900/30">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(120,50,190,0.05),transparent_50%)]" />
+    <div className="relative">
       <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-36 sm:pt-40 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <motion.div

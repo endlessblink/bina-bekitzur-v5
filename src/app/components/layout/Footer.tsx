@@ -6,7 +6,7 @@ const navigation = {
   main: [
     { name: 'בית', href: '/' },
     { name: 'כלי AI', href: '/ai-tools' },
-    { name: 'ניוזלטר', href: '/newsletter' },
+    { name: 'ניווט', href: '/newsletter' },
     { name: 'פודקאסט', href: '/podcast' },
     { name: 'מדריכים', href: '/tutorials' },
   ],
@@ -39,60 +39,107 @@ const navigation = {
       ),
     },
   ],
+  content: [
+    { name: 'כלי AI', href: '/ai-tools' },
+    { name: 'ניווט', href: '/newsletter' },
+    { name: 'פודקאסט', href: '/podcast' },
+    { name: 'מדריכים', href: '/tutorials' },
+  ],
+  community: [
+    { name: 'קהילה', href: '/community' },
+    { name: 'פורום', href: '/forum' },
+  ],
+  company: [
+    { name: 'חברה', href: '/company' },
+    { name: 'צוות', href: '/team' },
+  ],
+  legal: [
+    { name: 'תנאי שימוש', href: '/terms' },
+    { name: 'מדיניות פרטיות', href: '/privacy' },
+  ],
 };
 
 export default function Footer() {
   return (
-    <footer className="bg-white" aria-labelledby="footer-heading">
+    <footer className="relative border-t border-white/10" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
+            <Link href="/" className="text-2xl font-bold text-white">
               בינה בקיצור
             </Link>
-            <p className="text-sm leading-6 text-gray-600">
-              הפלטפורמה המובילה בישראל לחדשות ועדכונים בתחום הבינה המלאכותית
+            <p className="text-sm leading-6 text-white/60">
+              פלטפורמה מודרנית להצגת יישומי AI וכלים חדשניים בתחום הבינה המלאכותית
             </p>
             <div className="flex space-x-6 rtl:space-x-reverse">
               {navigation.social.map((item) => (
-                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+                <a key={item.name} href={item.href} className="text-white/60 hover:text-white">
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
                 </a>
               ))}
             </div>
           </div>
-          
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div>
-              <h3 className="text-sm font-semibold leading-6 text-gray-900">ניווט</h3>
-              <ul role="list" className="mt-6 space-y-4">
-                {navigation.main.map((item) => (
-                  <li key={item.name}>
-                    <Link href={item.href} className="text-sm leading-6 text-gray-600 hover:text-gray-900">
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm font-semibold leading-6 text-white">תוכן</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.content.map((item) => (
+                    <li key={item.name}>
+                      <Link href={item.href} className="text-sm leading-6 text-white/60 hover:text-white">
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm font-semibold leading-6 text-white">קהילה</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.community.map((item) => (
+                    <li key={item.name}>
+                      <Link href={item.href} className="text-sm leading-6 text-white/60 hover:text-white">
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div>
-              <h3 className="text-sm font-semibold leading-6 text-gray-900">צור קשר</h3>
-              <ul role="list" className="mt-6 space-y-4">
-                <li>
-                  <a href="mailto:contact@binabekitzur.com" className="text-sm leading-6 text-gray-600 hover:text-gray-900">
-                    contact@binabekitzur.com
-                  </a>
-                </li>
-              </ul>
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm font-semibold leading-6 text-white">חברה</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.company.map((item) => (
+                    <li key={item.name}>
+                      <Link href={item.href} className="text-sm leading-6 text-white/60 hover:text-white">
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-10 md:mt-0">
+                <h3 className="text-sm font-semibold leading-6 text-white">משפטי</h3>
+                <ul role="list" className="mt-6 space-y-4">
+                  {navigation.legal.map((item) => (
+                    <li key={item.name}>
+                      <Link href={item.href} className="text-sm leading-6 text-white/60 hover:text-white">
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-        <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-xs leading-5 text-gray-500">&copy; {new Date().getFullYear()} בינה בקיצור. כל הזכויות שמורות.</p>
+        <div className="mt-8 border-t border-white/10 pt-8 md:mt-0 md:border-none">
+          <p className="text-xs leading-5 text-white/60">&copy; 2024 בינה בקיצור. כל הזכויות שמורות.</p>
         </div>
       </div>
     </footer>

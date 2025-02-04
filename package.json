@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "drizzle-kit": "^0.30.4",
     "drizzle-orm": "^0.39.1",
+    "embla-carousel-react": "^8.5.2",
     "framer-motion": "^12.1.0",
     "next": "15.1.6",
     "react": "^19.0.0",
