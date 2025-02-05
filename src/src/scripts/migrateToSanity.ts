@@ -1,5 +1,4 @@
 import { createClient } from '@sanity/client';
-import { Model } from '@/types';
 import models from '@/lib/data/models';
 
 interface SanityDocument {

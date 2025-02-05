@@ -5,7 +5,7 @@ type CacheEntry<T> = {
 
 class Cache {
   private static instance: Cache;
-  private cache: Map<string, CacheEntry<any>>;
+  private cache: Map<string, CacheEntry<unknown>>;
 
   private constructor() {
     this.cache = new Map();
@@ -20,50 +20,32 @@ class Cache {
 
   public get<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    
-    if (!entry) {
-      return null;
-    }
-
-    // Check if cache has expired (default: 1 hour)
-    const now = Date.now();
-    if (now - entry.timestamp > 3600000) {
-      this.cache.delete(key);
-      return null;
-    }
-
-    return entry.data;
+    if (!entry) return null;
+    return entry.data as T;
   }
 
-  public set<T>(key: string, data: T, duration: number = 3600): void {
+  public set<T>(key: string, data: T): void {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
     });
-
-    // Clean up expired entries periodically
-    if (Math.random() < 0.1) { // 10% chance to run cleanup
-      this.cleanup(duration);
-    }
   }
 
-  private cleanup(duration: number): void {
-    const now = Date.now();
-    for (const [key, entry] of this.cache.entries()) {
-      if (now - entry.timestamp > duration * 1000) {
-        this.cache.delete(key);
-      }
-    }
+  public delete(key: string): void {
+    this.cache.delete(key);
+  }
+
+  public clear(): void {
+    this.cache.clear();
   }
 }
 
 const cacheInstance = Cache.getInstance();
 
-export async function getCachedData<T>(key: string): Promise<T | null> {
+export function getCachedData<T>(key: string): T | null {
   return cacheInstance.get<T>(key);
 }
 
-export async function setCachedData<T>(key: string, data: T, duration: number = 3600): Promise<void> {
-  cacheInstance.set<T>(key, data, duration);
-} 
-} 
+export function setCachedData<T>(key: string, data: T): void {
+  cacheInstance.set<T>(key, data);
+}
