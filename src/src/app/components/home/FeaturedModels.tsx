@@ -7,62 +7,13 @@ import Slider from 'react-slick';
 import type { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-interface FeaturedModel {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  href: string;
-}
-
-const featuredModels: FeaturedModel[] = [
-  {
-    id: 'gpt4',
-    name: 'GPT-4',
-    description: 'מודל השפה המתקדם ביותר של OpenAI',
-    icon: 'lni lni-brain',
-    href: '/models/gpt4',
-  },
-  {
-    id: 'dalle3',
-    name: 'DALL-E 3',
-    description: 'יצירת תמונות מטקסט בצורה מדויקת',
-    icon: 'lni lni-image',
-    href: '/models/dalle3',
-  },
-  {
-    id: 'claude2',
-    name: 'Claude 2',
-    description: 'מודל השפה המתקדם של Anthropic',
-    icon: 'lni lni-robot',
-    href: '/models/claude2',
-  },
-  {
-    id: 'midjourney',
-    name: 'Midjourney',
-    description: 'יצירת אמנות דיגיטלית מטקסט',
-    icon: 'lni lni-paint-bucket',
-    href: '/models/midjourney',
-  },
-  {
-    id: 'stable-diffusion',
-    name: 'Stable Diffusion',
-    description: 'מודל קוד פתוח ליצירת תמונות',
-    icon: 'lni lni-pencil-alt',
-    href: '/models/stable-diffusion',
-  },
-  {
-    id: 'palm2',
-    name: 'PaLM 2',
-    description: 'מודל השפה המתקדם של Google',
-    icon: 'lni lni-google',
-    href: '/models/palm2',
-  },
-];
+import { models } from '@/lib/data/models';
 
 export default function FeaturedModels() {
   const sliderRef = useRef<Slider>(null);
+  
+  // Get featured models from data file
+  const featuredModels = models.filter(model => model.featured);
 
   const settings: Settings = {
     dots: false,
@@ -117,22 +68,42 @@ export default function FeaturedModels() {
           <Slider ref={sliderRef} {...settings}>
             {[...featuredModels, ...featuredModels].map((model, index) => (
               <div key={`${model.id}-${index}`} className="px-3">
-                <Link href={model.href}>
+                <Link href={`/models/${model.slug}`}>
                   <motion.div
-                    className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-full"
+                    className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-[280px] flex flex-col"
                     whileHover={{ y: -4 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
                     <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
-                      <i className={`${model.icon} text-xl text-white`}></i>
+                      <img 
+                        src={model.logoUrl} 
+                        alt={`${model.name} logo`}
+                        className="w-5 h-5 object-contain"
+                        loading="lazy"
+                      />
                     </div>
-                    <div className="flex flex-col items-start">
-                      <h3 className="mt-8 text-lg font-medium leading-8 tracking-tight text-white">
+                    <div className="flex flex-col flex-grow">
+                      <h3 className="text-lg font-medium leading-8 tracking-tight text-white">
                         {model.name}
                       </h3>
-                      <p className="mt-2 text-base leading-7 text-white/60">
-                        {model.description}
+                      <p className="mt-2 text-base leading-7 text-white/60 line-clamp-4 flex-grow">
+                        {model.shortDescription}
                       </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <span className="inline-flex items-center rounded-full bg-purple-400/10 px-2.5 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-400/30">
+                          {model.pricing.type === 'free' ? 'חינם' : 
+                           model.pricing.type === 'freemium' ? 'Freemium' : 
+                           'בתשלום'}
+                        </span>
+                        {model.categories.slice(0, 2).map((category) => (
+                          <span 
+                            key={category}
+                            className="inline-flex items-center rounded-full bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70"
+                          >
+                            {category}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 </Link>

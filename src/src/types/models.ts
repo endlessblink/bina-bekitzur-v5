@@ -17,17 +17,19 @@ export interface AIModel {
   name: string;
   slug: string;
   description: string;
-  shortDescription?: string;
-  categories: string[];
-  subcategories: string[];
+  shortDescription: string;
+  icon: string; // LineIcons class name
+  logoUrl: string; // URL to company logo/favicon
   advantages: string[];
   disadvantages: string[];
   hasAPI: boolean;
   pricing: {
     type: 'free' | 'freemium' | 'paid';
-    details?: string;
   };
-  rating?: number;
-  link?: string;
-  apiDocs?: string;
+  categories: string[];
+  subcategories: string[];
+  tags?: string[];
+  featured?: boolean; // האם המודל צריך להופיע בעמוד הבית
+  createdAt: string;
+  updatedAt?: string;
 }
