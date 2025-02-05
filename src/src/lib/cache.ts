@@ -1,39 +1,39 @@
 // Memory cache
 interface CacheEntry<T> {
-  data: T
-  timestamp: number
+  data: T;
+  timestamp: number;
 }
 
-const memoryCache = new Map<string, CacheEntry<any>>()
+const cache = new Map<string, CacheEntry<unknown>>();
 
 export function getCachedData<T>(key: string, maxAge: number): T | null {
-  const entry = memoryCache.get(key)
-  if (!entry) return null
+  const entry = cache.get(key);
+  if (!entry) return null;
 
-  const now = Date.now()
+  const now = Date.now();
   if (now - entry.timestamp > maxAge * 1000) {
-    memoryCache.delete(key)
-    return null
+    cache.delete(key);
+    return null;
   }
 
-  return entry.data
+  return entry.data as T;
 }
 
 export function setCachedData<T>(key: string, data: T): void {
-  memoryCache.set(key, {
+  cache.set(key, {
     data,
     timestamp: Date.now(),
-  })
+  });
 }
 
 function cleanupMemoryCache(): void {
-  const now = Date.now()
-  for (const [key, entry] of memoryCache.entries()) {
+  const now = Date.now();
+  for (const [key, entry] of cache.entries()) {
     if (now - entry.timestamp > 3600 * 1000) {
-      memoryCache.delete(key)
+      cache.delete(key);
     }
   }
 }
 
 // Run cleanup every hour
-setInterval(cleanupMemoryCache, 3600000)
+setInterval(cleanupMemoryCache, 3600 * 1000);

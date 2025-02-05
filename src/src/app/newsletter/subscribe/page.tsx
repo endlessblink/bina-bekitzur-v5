@@ -14,7 +14,7 @@ export default function NewsletterSubscribe() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
 
@@ -31,7 +31,7 @@ export default function NewsletterSubscribe() {
 
       if (!response.ok) {
         setStatus('error');
-        setMessage(data.error || 'אירעה שגיאה בתהליך ההרשמה');
+        setMessage(data.message || 'אירעה שגיאה בהרשמה לניוזלטר');
         return;
       }
 
@@ -39,9 +39,13 @@ export default function NewsletterSubscribe() {
       setMessage(data.message || 'נרשמת בהצלחה לניוזלטר!');
       setEmail('');
       setName('');
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message);
+      } else {
+        setMessage('אירעה שגיאה בהרשמה לניוזלטר');
+      }
       setStatus('error');
-      setMessage(error.message);
     }
   };
 

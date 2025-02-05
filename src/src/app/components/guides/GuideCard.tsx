@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import Image from 'next/image';
 import { YouTubeVideo } from '@/app/api/youtube/guides/route';
 import { PlayCircleIcon } from '@heroicons/react/24/solid';
