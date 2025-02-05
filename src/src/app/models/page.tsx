@@ -1,13 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { ModelCard } from '@/app/components/shared/ModelCard'
+import ModelCard from '@/app/components/shared/ModelCard'
 import { Model } from '@/types'
 import { getModels } from '@/lib/sanity/hooks'
 import { motion } from 'framer-motion'
 import { useDebounce } from '@/lib/hooks/useDebounce'
-import { pricingOptions } from '@/app/components/shared/ModelCard'
 import { getCategories } from '@/lib/sanity/hooks'
 import { Category } from '@/types'
 
@@ -24,25 +22,28 @@ export default function ModelsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedPricing, setSelectedPricing] = useState('all')
-  const debouncedSearch = useDebounce(searchQuery, 300)
+  const debouncedSearchQuery = useDebounce(searchQuery, 300)
 
   useEffect(() => {
-    const fetchData = async () => {
-      const [modelsData, categoriesData] = await Promise.all([
-        getModels(),
-        getCategories()
-      ])
-      setModels(modelsData)
-      setCategories(categoriesData)
+    const fetchModels = async () => {
+      const models = await getModels()
+      setModels(models)
     }
-    fetchData()
+
+    const fetchCategories = async () => {
+      const categories = await getCategories()
+      setCategories(categories)
+    }
+
+    fetchModels()
+    fetchCategories()
   }, [])
 
-  const filteredModels = models.filter(model => {
-    const matchesSearch = !debouncedSearch || 
-      model.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      model.description.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-      model.categories?.some(cat => cat.name.toLowerCase().includes(debouncedSearch.toLowerCase()))
+  const filteredModels = models.filter((model) => {
+    const matchesSearch = !debouncedSearchQuery || 
+      model.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      model.description.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+      model.categories?.some(cat => cat.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()))
 
     const matchesCategory = !selectedCategory || 
       model.categories?.some(cat => cat._id === selectedCategory)

@@ -1,6 +1,6 @@
 // Memory cache
-type CacheEntry = { value: string; expiresAt: Date };
-const memoryCache = new Map<string, CacheEntry>();
+type CacheEntry<T> = { value: string; expiresAt: Date };
+const memoryCache = new Map<string, CacheEntry<any>>();
 
 export async function getCachedData<T>(key: string): Promise<T | null> {
   try {
@@ -15,21 +15,22 @@ export async function getCachedData<T>(key: string): Promise<T | null> {
   }
 }
 
-export async function setCachedData(key: string, value: any, expiresIn: number = 3600): Promise<void> {
+export async function setCachedData<T>(key: string, value: T, expiresIn: number = 3600): Promise<void> {
   try {
     if (value === null || value === undefined) {
       return;
     }
 
-    const stringValue = JSON.stringify(value);
     const expiresAt = new Date(Date.now() + expiresIn * 1000);
-    memoryCache.set(key, { value: stringValue, expiresAt });
+    memoryCache.set(key, {
+      value: JSON.stringify(value),
+      expiresAt,
+    });
   } catch (error) {
     console.error('[Cache] Set error:', error);
   }
 }
 
-// Cleanup function for memory cache
 function cleanupMemoryCache() {
   const now = new Date();
   for (const [key, entry] of memoryCache.entries()) {

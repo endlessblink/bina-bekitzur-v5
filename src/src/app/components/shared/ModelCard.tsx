@@ -9,7 +9,7 @@ interface ModelCardProps {
   onClick?: () => void
 }
 
-export function ModelCard({ model, isSelected, onClick }: ModelCardProps) {
+export default function ModelCard({ model, isSelected, onClick }: ModelCardProps) {
   return (
     <Card
       hoverable
