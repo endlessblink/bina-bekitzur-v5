@@ -1,4 +1,4 @@
-export type PricingType = 'free' | 'paid' | 'freemium';
+export type PricingType = 'free' | 'freemium' | 'paid';
 
 export interface Pricing {
   type: PricingType;
@@ -12,14 +12,17 @@ export interface AIModel {
   slug: string;
   description: string;
   shortDescription: string;
-  logoUrl?: string;
+  icon: string;
+  logoUrl: string;
   websiteUrl?: string;
   advantages: string[];
   disadvantages: string[];
-  pricing: Pricing;
   hasAPI: boolean;
-  categories: string[]; // category slugs
-  tags: string[];      // tag names
+  pricing: Pricing;
+  categories: string[];
+  subcategories: string[];
+  featured: boolean;
+  tags: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -28,7 +31,6 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  description: string;
 }
 
 export interface Tag {
@@ -37,4 +39,4 @@ export interface Tag {
 }
 
 // Helper type for creating new models
-export type CreateAIModel = Omit<AIModel, 'id' | 'createdAt' | 'updatedAt'>; 
+export type CreateAIModel = Omit<AIModel, 'id' | 'createdAt' | 'updatedAt'>;

@@ -1,85 +1,75 @@
 'use client';
 
-import React from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { AIModel } from '@/lib/types/models';
 import { motion } from 'framer-motion';
-import { models } from '@/lib/data/models';
-import { 
-  ChatBubbleBottomCenterTextIcon,
-  CpuChipIcon,
-  SparklesIcon,
-  PhotoIcon,
-  MusicalNoteIcon,
-  CommandLineIcon,
-  BeakerIcon,
-  CloudIcon
-} from '@heroicons/react/24/outline';
-import { 
-  OpenAI, 
-  Anthropic, 
-  Google, 
-  Midjourney, 
-  StableDiffusion,
-  Hugging,
-  Mistral
-} from '@lobehub/icons';
-
-const modelIcons: { [key: string]: React.ComponentType<any> } = {
-  'chatgpt': OpenAI,
-  'gpt-4': OpenAI,
-  'claude': Anthropic,
-  'gemini': Google,
-  'mistral': Mistral,
-  'llama': Hugging,
-  'stable-diffusion': StableDiffusion,
-  'dalle': OpenAI,
-  'midjourney': Midjourney,
-  'musicgen': MusicalNoteIcon,
-  'bard': Google,
-  'anthropic': Anthropic,
-  'huggingface': Hugging
-};
+import { CloudIcon } from '@heroicons/react/24/outline';
 
 interface ModelCardProps {
-  model: typeof models[0];
+  model: AIModel;
+  showDetails?: boolean;
   onClick?: () => void;
-  className?: string;
 }
 
-interface IconProps {
-  model: typeof models[0];
-  className?: string;
+interface ModelIconProps extends React.HTMLAttributes<HTMLDivElement> {
+  model: AIModel;
 }
 
-const Icon: React.FC<IconProps> = ({ model, className = '' }) => {
-  const IconComponent = modelIcons[model.id];
-  const iconUrl = model.websiteUrl ? `https://twenty-icons.com/${new URL(model.websiteUrl).hostname}/64` : null;
+const Icon = ({ model, className = '', ...props }: ModelIconProps) => {
+  const [iconUrl, setIconUrl] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const checkIcon = async () => {
+      if (!model.websiteUrl) {
+        setError(true);
+        return;
+      }
+
+      try {
+        const response = await fetch(model.logoUrl);
+        if (response.ok) {
+          setIconUrl(model.logoUrl);
+        } else {
+          setError(true);
+        }
+      } catch {
+        setError(true);
+      }
+    };
+
+    checkIcon();
+  }, [model.websiteUrl, model.logoUrl]);
+
+  if (error || !iconUrl) {
+    return (
+      <div className={`flex items-center justify-center ${className}`} {...props}>
+        <CloudIcon className="w-12 h-12 text-gray-400" />
+      </div>
+    );
+  }
 
   return (
-    <div className={`flex items-center justify-center ${className}`}>
-      {IconComponent ? (
-        <IconComponent className="w-full h-full text-white" />
-      ) : iconUrl ? (
-        <img 
-          src={iconUrl} 
-          alt={`${model.name} logo`}
-          className="w-full h-full object-contain p-1"
-          loading="lazy"
-          onError={() => {}}
-        />
-      ) : (
-        <CloudIcon className="w-full h-full text-white" />
-      )}
+    <div className={`relative ${className}`} {...props}>
+      <Image
+        src={iconUrl}
+        alt={`${model.name} icon`}
+        className="object-contain rounded-lg"
+        fill
+      />
     </div>
   );
 };
 
-const ModelCard: React.FC<ModelCardProps> & { Icon: typeof Icon } = ({ model, onClick, className = '' }) => {
-  return (
-    <motion.div
-      onClick={onClick}
-      className={`relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-[280px] flex flex-col ${className}`}
+const ModelCard = ({ model, showDetails = false, onClick }: ModelCardProps) => {
+  const content = (
+    <motion.div 
+      className="group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-[280px] flex flex-col"
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300 }}
+      onClick={onClick}
     >
       <div className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
         <Icon model={model} className="w-8 h-8" />
@@ -108,6 +98,16 @@ const ModelCard: React.FC<ModelCardProps> & { Icon: typeof Icon } = ({ model, on
         </div>
       </div>
     </motion.div>
+  );
+
+  if (onClick) {
+    return content;
+  }
+
+  return (
+    <Link href={`/models/${model.id}`}>
+      {content}
+    </Link>
   );
 };
 

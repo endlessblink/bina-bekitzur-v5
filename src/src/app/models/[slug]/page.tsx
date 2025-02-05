@@ -1,8 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
+'use client';
 
-const prisma = new PrismaClient();
+import { notFound } from 'next/navigation';
+import ModelCard from '@/app/components/shared/ModelCard';
+import AdvantagesDisadvantages from '@/app/components/shared/AdvantagesDisadvantages';
+import { models } from '@/lib/data/models';
 
 interface Props {
   params: {
@@ -10,31 +11,9 @@ interface Props {
   };
 }
 
-export async function generateMetadata({ params }: Props) {
-  const model = await prisma.aIModel.findUnique({
-    where: { slug: params.slug },
-  });
-
-  if (!model) {
-    return {
-      title: 'מודל לא נמצא - בינה בקיצור',
-    };
-  }
-
-  return {
-    title: `${model.name} - בינה בקיצור`,
-    description: model.shortDescription,
-  };
-}
-
-export default async function ModelPage({ params }: Props) {
-  const model = await prisma.aIModel.findUnique({
-    where: { slug: params.slug },
-    include: {
-      categories: true,
-      tags: true,
-    },
-  });
+export default function ModelPage({ params }: Props) {
+  // Find the model from our static data
+  const model = models.find(m => m.id === params.slug);
 
   if (!model) {
     notFound();
@@ -46,17 +25,12 @@ export default async function ModelPage({ params }: Props) {
         <div className="bg-white/5 backdrop-blur-xl rounded-lg p-8">
           {/* Header */}
           <div className="flex items-start space-x-6 rtl:space-x-reverse">
-            {model.logoUrl && (
-              <div className="flex-shrink-0">
-                <Image
-                  src={model.logoUrl}
-                  alt={model.name}
-                  width={80}
-                  height={80}
-                  className="rounded-lg"
-                />
-              </div>
-            )}
+            <div className="flex-shrink-0 w-20 h-20">
+              <ModelCard.Icon 
+                model={model}
+                className="w-full h-full"
+              />
+            </div>
             <div className="flex-1">
               <h1 className="text-4xl font-bold">{model.name}</h1>
               <p className="mt-2 text-xl text-gray-400">
@@ -69,10 +43,10 @@ export default async function ModelPage({ params }: Props) {
           <div className="mt-6 flex flex-wrap gap-2">
             {model.categories.map((category) => (
               <span
-                key={category.id}
+                key={category}
                 className="inline-flex items-center rounded-full bg-blue-400/10 px-3 py-1 text-sm font-medium text-blue-400"
               >
-                {category.name}
+                {category}
               </span>
             ))}
             {model.hasAPI && (
@@ -91,39 +65,11 @@ export default async function ModelPage({ params }: Props) {
           </div>
 
           {/* Advantages and Disadvantages */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-2xl font-semibold mb-4 text-green-400">
-                יתרונות
-              </h2>
-              <ul className="space-y-2">
-                {model.advantages.map((advantage, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start text-gray-300"
-                  >
-                    <span className="text-green-400 mr-2">✓</span>
-                    {advantage}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-2xl font-semibold mb-4 text-red-400">
-                חסרונות
-              </h2>
-              <ul className="space-y-2">
-                {model.disadvantages.map((disadvantage, index) => (
-                  <li
-                    key={index}
-                    className="flex items-start text-gray-300"
-                  >
-                    <span className="text-red-400 mr-2">✗</span>
-                    {disadvantage}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="mt-8">
+            <AdvantagesDisadvantages 
+              advantages={model.advantages}
+              disadvantages={model.disadvantages}
+            />
           </div>
 
           {/* Tags */}
@@ -132,10 +78,10 @@ export default async function ModelPage({ params }: Props) {
             <div className="flex flex-wrap gap-2">
               {model.tags.map((tag) => (
                 <span
-                  key={tag.id}
+                  key={tag}
                   className="inline-flex items-center rounded-full bg-white/5 px-3 py-1 text-sm font-medium text-gray-400"
                 >
-                  {tag.name}
+                  {tag}
                 </span>
               ))}
             </div>
@@ -165,4 +111,4 @@ export default async function ModelPage({ params }: Props) {
       </div>
     </main>
   );
-} 
+}

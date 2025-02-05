@@ -17,6 +17,51 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.spotify.com',
+      },
+      // Model Icons
+      {
+        protocol: 'https',
+        hostname: 'huggingface.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'openai.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'chat.openai.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'claude.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'gemini.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mistral.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ai.meta.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'stability.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.midjourney.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'heygen.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mubert.com',
       }
     ],
     dangerouslyAllowSVG: true,
@@ -30,4 +75,4 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig
