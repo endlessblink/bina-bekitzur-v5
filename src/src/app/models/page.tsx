@@ -1,28 +1,25 @@
 'use client'
 
-import { Metadata } from 'next'
-import { ModelCard } from '@/app/components/shared/ModelCard'
-import { getModels, getCategories } from '@/lib/sanity/hooks'
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { ModelCard } from '@/app/components/shared/ModelCard'
+import { Model } from '@/types'
+import { getModels } from '@/lib/sanity/hooks'
 import { motion } from 'framer-motion'
 import { useDebounce } from '@/lib/hooks/useDebounce'
-import { Model, Category } from '@/types'
+import { pricingOptions } from '@/app/components/shared/ModelCard'
+import { getCategories } from '@/lib/sanity/hooks'
+import { Category } from '@/types'
 
-const pricingOptions = [
+const categories = [
   { id: 'all', name: 'הכל' },
-  { id: 'free', name: 'חינם' },
-  { id: 'freemium', name: 'Freemium' },
+  { id: 'free', name: 'חינמי' },
   { id: 'paid', name: 'בתשלום' },
 ]
 
-export const metadata: Metadata = {
-  title: 'מודלים - בינה בקיצור',
-  description: 'מאגר מודלים של בינה מלאכותית עם הסברים בעברית',
-}
-
 export default function ModelsPage() {
   const [models, setModels] = useState<Model[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categoriesData, setCategories] = useState<Category[]>([])
   const [selectedModels, setSelectedModels] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -84,7 +81,7 @@ export default function ModelsPage() {
               className="w-full rounded-lg border p-2 md:w-48"
             >
               <option value="">כל הקטגוריות</option>
-              {categories.map((category) => (
+              {categoriesData.map((category) => (
                 <option key={category._id} value={category._id}>
                   {category.name}
                 </option>
