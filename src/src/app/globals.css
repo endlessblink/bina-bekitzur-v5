@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --accent: #9333ea;
+  --card-bg: #1a1a1a;
+  --no-of-slides: 4;
+  --slides-in-view: 3;
+  --slide-width: 300px;
+  --slide-gap: 1.5rem;
+  --iteration-time: 30s;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ffffff;
+    --accent: #9333ea;
+    --card-bg: #1a1a1a;
+  }
+}
+
+/* RTL Support */
+html[dir="rtl"] {
+  text-align: right;
+}
+
+html[dir="rtl"] .ltr {
+  direction: ltr;
+}
+
+/* Base styles */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-324px * 10)); /* (300px + 24px gap) * number of unique cards */
+  }
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: scroll 60s linear infinite;
+}
+
+.carousel-item {
+  width: 300px;
+  flex: 0 0 auto;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.carousel-item.fade-out {
+  opacity: 0;
+  transform: scale(0.95) translateX(-20px);
+}
+
+.carousel-item.fade-in {
+  opacity: 0;
+  transform: scale(0.95) translateX(20px);
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+/* Override slick carousel styles */
+.slick-track {
+  display: flex !important;
+  gap: 1.5rem;
+}
+
+.slick-slide {
+  height: inherit !important;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
