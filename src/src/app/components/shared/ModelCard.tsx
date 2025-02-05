@@ -40,34 +40,21 @@ interface IconProps {
 }
 
 const Icon: React.FC<IconProps> = ({ model, className = '' }) => {
-  const FallbackIcon = fallbackIcons[model.icon];
+  const FallbackIcon = fallbackIcons[model.id];
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
       {model.logoUrl ? (
-        <>
-          <img 
-            src={model.logoUrl} 
-            alt={`${model.name} logo`}
-            className="w-full h-full object-contain"
-            loading="lazy"
-            onError={(e) => {
-              const imgElement = e.currentTarget;
-              const fallbackElement = imgElement.nextElementSibling as HTMLElement;
-              if (fallbackElement) {
-                imgElement.style.display = 'none';
-                fallbackElement.style.display = 'block';
-              }
-            }}
-          />
-          {FallbackIcon && (
-            <div style={{ display: 'none' }}>
-              <FallbackIcon className="w-full h-full text-white" />
-            </div>
-          )}
-        </>
+        <img 
+          src={model.logoUrl} 
+          alt={`${model.name} logo`}
+          className="w-full h-full object-contain p-1"
+          loading="lazy"
+        />
+      ) : FallbackIcon ? (
+        <FallbackIcon className="w-full h-full text-white" />
       ) : (
-        FallbackIcon && <FallbackIcon className="w-full h-full text-white" />
+        <SparklesIcon className="w-full h-full text-white" />
       )}
     </div>
   );
