@@ -1,12 +1,25 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import { models } from '@/lib/data/models';
 import { categories } from '@/lib/data/categories';
 import ModelCard from '@/app/components/shared/ModelCard';
-import { StarIcon } from '@heroicons/react/24/solid';
+import LoadingAnimation from '@/app/components/shared/LoadingAnimation';
+
+interface CategoryImages {
+  [key: string]: string[];
+}
 
 const TopModelsPage = () => {
+  const [categoryImages, setCategoryImages] = useState<CategoryImages>({});
+  const [loadingImages, setLoadingImages] = useState<boolean>(true);
+
   // Get top 5 models for each category based on features and technology rating
   const getTopModels = (categoryId: string) => {
     return models
@@ -18,6 +31,31 @@ const TopModelsPage = () => {
       })
       .slice(0, 5);
   };
+
+  // Fetch category images on mount
+  useEffect(() => {
+    const fetchImages = async () => {
+      setLoadingImages(true);
+      const images: CategoryImages = {};
+      
+      try {
+        for (const category of categories) {
+          const response = await fetch(`/api/images?category=${category.id}&count=5`);
+          const data = await response.json();
+          if (data.images) {
+            images[category.id] = data.images;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+      
+      setCategoryImages(images);
+      setLoadingImages(false);
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-purple-950 to-black text-white p-8">
@@ -47,24 +85,58 @@ const TopModelsPage = () => {
               <h2 className="text-2xl font-semibold">{category.name}</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={20}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 8000, disableOnInteraction: false }}
+              className="model-slider"
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+                1280: { slidesPerView: 5 },
+              }}
+            >
               {topModels.map((model, index) => (
-                <motion.div
-                  key={model.name}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <div className="relative">
-                    <ModelCard model={model} />
-                    <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/50 rounded-full px-2 py-1">
-                      <StarIcon className="h-4 w-4 text-yellow-400" />
-                      <span className="text-sm">{model.rating.overall.toFixed(1)}</span>
-                    </div>
+                <SwiperSlide key={model.id}>
+                  <div className="aspect-w-16 aspect-h-9 mb-4 bg-white/5 rounded-lg overflow-hidden relative h-[200px]">
+                    <AnimatePresence mode="wait">
+                      {loadingImages ? (
+                        <motion.div
+                          key="loading"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm"
+                        >
+                          <LoadingAnimation size="sm" />
+                        </motion.div>
+                      ) : categoryImages[category.id]?.[index] && (
+                        <motion.div
+                          key="image-container"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0"
+                        >
+                          <img
+                            src={categoryImages[category.id][index]}
+                            alt={`${category.name} cover ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            style={{ minHeight: '200px' }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </motion.div>
+                  <ModelCard model={model} />
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </motion.div>
         );
       })}
