@@ -36,11 +36,19 @@ export function LatestContent() {
       try {
         const response = await fetch('/api/newsletter/latest');
         if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Newsletter API Error:', {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Object.fromEntries(response.headers.entries()),
+            body: errorText
+          });
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const { data, error } = await response.json();
         
         if (error) {
+          console.error('Newsletter API returned error:', error);
           throw new Error(error);
         }
         
@@ -55,11 +63,19 @@ export function LatestContent() {
       try {
         const response = await fetch('/api/podcast/latest');
         if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Podcast API Error:', {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Object.fromEntries(response.headers.entries()),
+            body: errorText
+          });
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const { data, error } = await response.json();
         
         if (error) {
+          console.error('Podcast API returned error:', error);
           throw new Error(error);
         }
         

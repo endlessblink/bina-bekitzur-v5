@@ -9,23 +9,34 @@ import {
   SparklesIcon,
   PhotoIcon,
   MusicalNoteIcon,
-  CommandLineIcon
+  CommandLineIcon,
+  BeakerIcon,
+  CloudIcon
 } from '@heroicons/react/24/outline';
+import { 
+  OpenAI, 
+  Anthropic, 
+  Google, 
+  Midjourney, 
+  StableDiffusion,
+  Hugging,
+  Mistral
+} from '@lobehub/icons';
 
-const fallbackIcons: { [key: string]: React.ComponentType<any> } = {
-  'chatgpt': ChatBubbleBottomCenterTextIcon,
-  'claude': ChatBubbleBottomCenterTextIcon,
-  'gemini': CpuChipIcon,
-  'azure': CpuChipIcon,
-  'mistral': SparklesIcon,
-  'llama': SparklesIcon,
-  'stable-diffusion': PhotoIcon,
-  'dalle': PhotoIcon,
-  'midjourney': PhotoIcon,
+const modelIcons: { [key: string]: React.ComponentType<any> } = {
+  'chatgpt': OpenAI,
+  'gpt-4': OpenAI,
+  'claude': Anthropic,
+  'gemini': Google,
+  'mistral': Mistral,
+  'llama': Hugging,
+  'stable-diffusion': StableDiffusion,
+  'dalle': OpenAI,
+  'midjourney': Midjourney,
   'musicgen': MusicalNoteIcon,
-  'bard': SparklesIcon,
-  'anthropic': ChatBubbleBottomCenterTextIcon,
-  'huggingface': CommandLineIcon
+  'bard': Google,
+  'anthropic': Anthropic,
+  'huggingface': Hugging
 };
 
 interface ModelCardProps {
@@ -40,21 +51,23 @@ interface IconProps {
 }
 
 const Icon: React.FC<IconProps> = ({ model, className = '' }) => {
-  const FallbackIcon = fallbackIcons[model.id];
+  const IconComponent = modelIcons[model.id];
+  const iconUrl = model.websiteUrl ? `https://twenty-icons.com/${new URL(model.websiteUrl).hostname}/64` : null;
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      {model.logoUrl ? (
+      {IconComponent ? (
+        <IconComponent className="w-full h-full text-white" />
+      ) : iconUrl ? (
         <img 
-          src={model.logoUrl} 
+          src={iconUrl} 
           alt={`${model.name} logo`}
           className="w-full h-full object-contain p-1"
           loading="lazy"
+          onError={() => {}}
         />
-      ) : FallbackIcon ? (
-        <FallbackIcon className="w-full h-full text-white" />
       ) : (
-        <SparklesIcon className="w-full h-full text-white" />
+        <CloudIcon className="w-full h-full text-white" />
       )}
     </div>
   );
@@ -68,8 +81,8 @@ const ModelCard: React.FC<ModelCardProps> & { Icon: typeof Icon } = ({ model, on
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300 }}
     >
-      <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
-        <Icon model={model} className="w-5 h-5" />
+      <div className="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
+        <Icon model={model} className="w-8 h-8" />
       </div>
       <div className="flex flex-col flex-grow">
         <h3 className="text-lg font-medium leading-8 tracking-tight text-white">

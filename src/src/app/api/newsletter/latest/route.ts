@@ -61,6 +61,7 @@ export async function GET() {
     // Try to get cached data first
     const cached = await getCachedData<Newsletter>(CACHE_KEY);
     if (cached) {
+      console.log('Returning cached newsletter data');
       return NextResponse.json({ data: cached });
     }
 
@@ -75,10 +76,13 @@ export async function GET() {
     }
 
     console.log('Fetching newsletters from MailerLite...');
-
+    
+    const url = 'https://connect.mailerlite.com/api/campaigns?filter[status]=sent&limit=1&include=content';
+    console.log('Request URL:', url);
+    
     // Fetch campaigns with full content
     const response = await fetchWithRetry(
-      'https://connect.mailerlite.com/api/campaigns?filter[status]=sent&limit=1&include=content',
+      url,
       {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
@@ -91,7 +95,12 @@ export async function GET() {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('MailerLite API Error:', errorData);
+      console.error('MailerLite API Error Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries()),
+        body: errorData
+      });
       
       // Handle specific error cases
       switch (response.status) {
