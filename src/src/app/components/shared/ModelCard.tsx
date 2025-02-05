@@ -5,7 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { AIModel } from '@/lib/types/models';
 import { motion } from 'framer-motion';
-import { CloudIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { 
+  SparklesIcon,
+  RocketLaunchIcon,
+  BeakerIcon,
+  LightBulbIcon,
+  StarIcon,
+  FireIcon,
+  BoltIcon,
+  CommandLineIcon
+} from '@heroicons/react/24/solid';
+import { OpenAI } from '@lobehub/icons';
 
 interface ModelCardProps {
   model: AIModel;
@@ -17,48 +27,30 @@ interface ModelIconProps extends React.HTMLAttributes<HTMLDivElement> {
   model: AIModel;
 }
 
+const getModelIcon = (model: AIModel) => {
+  const name = model.name.toLowerCase();
+  if (name.includes('openai') || name.includes('gpt')) return OpenAI;
+  if (name.includes('claude') || name.includes('anthropic')) return SparklesIcon;
+  if (name.includes('gemini')) return BeakerIcon;
+  if (name.includes('midjourney')) return StarIcon;
+  if (name.includes('huggingface')) return RocketLaunchIcon;
+  if (name.includes('stable')) return BoltIcon;
+  if (name.includes('llama')) return FireIcon;
+  if (name.includes('mistral')) return LightBulbIcon;
+  return CommandLineIcon;
+};
+
 const Icon = ({ model, className = '', ...props }: ModelIconProps) => {
-  const [iconUrl, setIconUrl] = useState<string | null>(null);
   const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const checkIcon = async () => {
-      if (!model.websiteUrl) {
-        setError(true);
-        return;
-      }
-
-      try {
-        const response = await fetch(model.logoUrl);
-        if (response.ok) {
-          setIconUrl(model.logoUrl);
-        } else {
-          setError(true);
-        }
-      } catch {
-        setError(true);
-      }
-    };
-
-    checkIcon();
-  }, [model.websiteUrl, model.logoUrl]);
-
-  if (error || !iconUrl) {
-    return (
-      <div className={`flex items-center justify-center ${className}`} {...props}>
-        <CloudIcon className="w-12 h-12 text-gray-400" />
-      </div>
-    );
-  }
+  const IconComponent = getModelIcon(model);
 
   return (
-    <div className={`relative ${className}`} {...props}>
-      <Image
-        src={iconUrl}
-        alt={`${model.name} icon`}
-        className="object-contain rounded-lg"
-        fill
-      />
+    <div className={`flex items-center justify-center ${className}`} {...props}>
+      {IconComponent === OpenAI ? (
+        <IconComponent size={48} />
+      ) : (
+        <IconComponent className="w-12 h-12 text-white" />
+      )}
     </div>
   );
 };

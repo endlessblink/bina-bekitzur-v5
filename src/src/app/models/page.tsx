@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
+import { OpenAI } from '@lobehub/icons';
+import {
   ChatBubbleBottomCenterTextIcon,
-  CubeIcon,
   DocumentTextIcon,
-  PaintBrushIcon,
-  CodeBracketIcon,
   MusicalNoteIcon,
+  CodeBracketIcon,
   VideoCameraIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
+  CubeIcon,
+  PaintBrushIcon,
+  CommandLineIcon
 } from '@heroicons/react/24/outline';
 import ModelCard from '@/app/components/shared/ModelCard';
 import { models } from '@/lib/data/models';
@@ -28,7 +28,7 @@ const categories = [
   { 
     id: 'language',
     name: 'מודל שפה',
-    icon: ChatBubbleBottomCenterTextIcon,
+    icon: OpenAI,
     subcategories: ['שיחה', 'תרגום', 'סיכום', 'כתיבה']
   },
   {
@@ -154,7 +154,7 @@ export default function ModelsPage() {
           {/* Main Categories */}
           <div className="flex flex-wrap gap-4">
             {categories.map((category) => {
-              const Icon = category.icon;
+              const IconComponent = category.icon;
               return (
                 <motion.button
                   key={category.id}
@@ -167,7 +167,13 @@ export default function ModelsPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Icon className="h-5 w-5" />
+                  <div className="flex items-center justify-center w-8 h-8">
+                    {IconComponent.displayName?.includes('Heroicons') ? (
+                      <IconComponent className="w-6 h-6 text-white" />
+                    ) : (
+                      <IconComponent size={24} />
+                    )}
+                  </div>
                   <span>{category.name}</span>
                 </motion.button>
               );
