@@ -1,44 +1,35 @@
 // Memory cache
-interface CacheEntry {
-  value: string
-  expiresAt: Date
+interface CacheEntry<T> {
+  data: T
+  timestamp: number
 }
 
-const memoryCache = new Map<string, CacheEntry>()
+const memoryCache = new Map<string, CacheEntry<any>>()
 
-export async function getCachedData<T>(key: string): Promise<T | null> {
-  try {
-    const memoryCached = memoryCache.get(key)
-    if (memoryCached && memoryCached.expiresAt > new Date()) {
-      return JSON.parse(memoryCached.value)
-    }
-    return null
-  } catch (error) {
-    console.error('[Cache] Get error:', error)
+export function getCachedData<T>(key: string, maxAge: number): T | null {
+  const entry = memoryCache.get(key)
+  if (!entry) return null
+
+  const now = Date.now()
+  if (now - entry.timestamp > maxAge * 1000) {
+    memoryCache.delete(key)
     return null
   }
+
+  return entry.data
 }
 
-export async function setCachedData<T>(key: string, value: T, expiresIn = 3600): Promise<void> {
-  try {
-    if (value === null || value === undefined) {
-      return
-    }
-
-    const expiresAt = new Date(Date.now() + expiresIn * 1000)
-    memoryCache.set(key, {
-      value: JSON.stringify(value),
-      expiresAt,
-    })
-  } catch (error) {
-    console.error('[Cache] Set error:', error)
-  }
+export function setCachedData<T>(key: string, data: T): void {
+  memoryCache.set(key, {
+    data,
+    timestamp: Date.now(),
+  })
 }
 
 function cleanupMemoryCache(): void {
-  const now = new Date()
+  const now = Date.now()
   for (const [key, entry] of memoryCache.entries()) {
-    if (entry.expiresAt <= now) {
+    if (now - entry.timestamp > 3600 * 1000) {
       memoryCache.delete(key)
     }
   }

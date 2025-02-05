@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import GuideCard from '@/app/components/guides/GuideCard';
-import LoadingAnimation from '@/app/components/shared/LoadingAnimation';
 import GuideCardSkeleton from '@/app/components/guides/GuideCardSkeleton';
 import { YouTubeVideo } from '@/app/api/youtube/guides/route';
 

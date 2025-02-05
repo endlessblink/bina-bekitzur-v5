@@ -125,16 +125,19 @@ export function PodcastPlayer({ episode, compact = false }: PodcastPlayerProps) 
       {/* Controls */}
       <div className="flex flex-row-reverse items-start gap-8 mb-12 px-2">
         {/* Volume Control */}
-        <div className="relative flex items-center mt-2">
-          <motion.button
-            onClick={toggleMute}
-            onMouseEnter={() => setIsVolumeVisible(true)}
-            className="w-12 h-12 flex items-center justify-center text-white/80 hover:text-white mr-2"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+        <div className="relative flex items-center">
+          <button
+            onClick={handleVolumeIconClick}
+            className="p-2 hover:bg-gray-100 rounded-full"
           >
-            <i className={`fas fa-volume-${volume === 0 ? 'mute' : volume < 0.5 ? 'down' : 'up'} text-xl`}></i>
-          </motion.button>
+            {volume === 0 ? (
+              <SpeakerXMarkIcon className="h-6 w-6" />
+            ) : volume < 0.5 ? (
+              <SpeakerWaveIcon className="h-6 w-6" />
+            ) : (
+              <SpeakerWaveIcon className="h-6 w-6" />
+            )}
+          </button>
 
           <AnimatePresence>
             {isVolumeVisible && (

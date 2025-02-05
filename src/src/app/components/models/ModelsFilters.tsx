@@ -8,12 +8,6 @@ interface Category {
   name: string;
 }
 
-interface FiltersProps {
-  onSearch: (query: string) => void;
-  onCategoryChange: (categoryId: string) => void;
-  onAPIToggle: (enabled: boolean) => void;
-}
-
 export default function ModelsFilters() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');

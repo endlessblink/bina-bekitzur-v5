@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import Layout from "./components/layout/Layout";
-import Script from 'next/script';
 import './globals.css';
 import './styles/swiper.css';
 import 'slick-carousel/slick/slick.css';

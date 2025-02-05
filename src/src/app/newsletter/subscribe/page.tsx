@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+
+interface SubscribeResponse {
+  success: boolean;
+  message: string;
+}
 
 export default function NewsletterSubscribe() {
   const [email, setEmail] = useState('');
@@ -23,7 +27,7 @@ export default function NewsletterSubscribe() {
         body: JSON.stringify({ email, name }),
       });
 
-      const data = await response.json();
+      const data: SubscribeResponse = await response.json();
 
       if (!response.ok) {
         setStatus('error');
@@ -32,7 +36,7 @@ export default function NewsletterSubscribe() {
       }
 
       setStatus('success');
-      setMessage(data.data?.message || 'נרשמת בהצלחה לניוזלטר!');
+      setMessage(data.message || 'נרשמת בהצלחה לניוזלטר!');
       setEmail('');
       setName('');
     } catch (error: any) {

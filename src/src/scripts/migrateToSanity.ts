@@ -1,6 +1,18 @@
-import { client } from '../sanity/config'
-import * as fs from 'fs'
-import * as path from 'path'
+import { createClient } from '@sanity/client';
+import * as fs from 'fs';
+import * as path from 'path';
+
+interface SanityClient {
+  create: (document: any) => Promise<any>;
+  createIfNotExists: (document: any) => Promise<any>;
+}
+
+const client = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  useCdn: false,
+  token: process.env.SANITY_API_TOKEN,
+});
 
 // Helper function to create a document
 async function createDocument(doc: any, type: string) {

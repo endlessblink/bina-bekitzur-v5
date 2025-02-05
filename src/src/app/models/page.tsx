@@ -4,15 +4,10 @@ import { useEffect, useState } from 'react'
 import ModelCard from '@/app/components/shared/ModelCard'
 import { Model } from '@/types'
 import { getModels } from '@/lib/sanity/hooks'
+import { motion } from 'framer-motion'
 import { useDebounce } from '@/lib/hooks/useDebounce'
 import { getCategories } from '@/lib/sanity/hooks'
 import { Category } from '@/types'
-
-const categories = [
-  { id: 'all', name: 'הכל' },
-  { id: 'free', name: 'חינמי' },
-  { id: 'paid', name: 'בתשלום' },
-]
 
 export default function ModelsPage() {
   const [models, setModels] = useState<Model[]>([])
