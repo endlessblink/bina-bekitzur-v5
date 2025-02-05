@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -10,23 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { models } from '@/lib/data/models';
 import Modal from '../shared/Modal';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { 
-  AzureIcon, 
-  ChatGPTIcon, 
-  ClaudeIcon, 
-  GeminiIcon, 
-  MistralIcon, 
-  LlamaIcon 
-} from '@lobehub/icons';
-
-const modelIcons: { [key: string]: React.ComponentType<any> } = {
-  'chatgpt': ChatGPTIcon,
-  'claude': ClaudeIcon,
-  'gemini': GeminiIcon,
-  'azure': AzureIcon,
-  'mistral': MistralIcon,
-  'llama': LlamaIcon,
-};
+import ModelCard from '../shared/ModelCard';
 
 interface ModelDetailsProps {
   model: typeof models[0];
@@ -35,21 +20,12 @@ interface ModelDetailsProps {
 
 function ModelDetails({ model, onClose }: ModelDetailsProps) {
   return (
-    <div className="text-white">
+    <div className="text-white text-right" dir="rtl">
       <div className="flex items-center gap-4 mb-6">
         <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-white/10">
-          {modelIcons[model.icon.toLowerCase()] ? (
-            React.createElement(modelIcons[model.icon.toLowerCase()], {
-              className: "w-8 h-8",
-              style: { color: 'white' }
-            })
-          ) : (
-            <img 
-              src={model.logoUrl} 
-              alt={`${model.name} logo`}
-              className="w-8 h-8 object-contain"
-            />
-          )}
+          <div className="w-8 h-8">
+            <ModelCard.Icon model={model} />
+          </div>
         </div>
         <div>
           <h3 className="text-xl font-semibold">{model.name}</h3>
@@ -92,7 +68,7 @@ function ModelDetails({ model, onClose }: ModelDetailsProps) {
   );
 }
 
-export default function FeaturedModels() {
+const FeaturedModels: React.FC = () => {
   const sliderRef = useRef<Slider>(null);
   const [selectedModel, setSelectedModel] = useState<typeof models[0] | null>(null);
   
@@ -109,10 +85,13 @@ export default function FeaturedModels() {
     autoplaySpeed: 0,
     cssEase: "linear",
     pauseOnHover: true,
+    pauseOnFocus: true,
     arrows: false,
     rtl: true,
     swipe: false,
     touchMove: false,
+    variableWidth: false,
+    adaptiveHeight: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -149,72 +128,31 @@ export default function FeaturedModels() {
 
         {/* Full width carousel */}
         <div className="w-screen relative -mx-[50vw] right-[50%] mt-16">
-          <Slider ref={sliderRef} {...settings}>
-            {[...featuredModels, ...featuredModels].map((model, index) => (
-              <div key={`${model.id}-${index}`} className="px-3">
-                <motion.div
-                  onClick={() => setSelectedModel(model)}
-                  className="relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-[280px] flex flex-col"
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
-                    {modelIcons[model.icon.toLowerCase()] ? (
-                      React.createElement(modelIcons[model.icon.toLowerCase()], {
-                        className: "w-5 h-5",
-                        style: { color: 'white' }
-                      })
-                    ) : (
-                      <img 
-                        src={model.logoUrl} 
-                        alt={`${model.name} logo`}
-                        className="w-5 h-5 object-contain"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-                  <div className="flex flex-col flex-grow">
-                    <h3 className="text-lg font-medium leading-8 tracking-tight text-white">
-                      {model.name}
-                    </h3>
-                    <p className="mt-2 text-base leading-7 text-white/60 line-clamp-4 flex-grow">
-                      {model.shortDescription}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <span className="inline-flex items-center rounded-full bg-purple-400/10 px-2.5 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-400/30">
-                        {model.pricing.type === 'free' ? 'חינם' : 
-                         model.pricing.type === 'freemium' ? 'Freemium' : 
-                         'בתשלום'}
-                      </span>
-                      {model.categories.slice(0, 2).map((category) => (
-                        <span 
-                          key={category}
-                          className="inline-flex items-center rounded-full bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70"
-                        >
-                          {category}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            ))}
-          </Slider>
+          <div className="overflow-hidden">
+            <Slider ref={sliderRef} {...settings}>
+              {[...featuredModels, ...featuredModels].map((model, index) => (
+                <div key={`${model.id}-${index}`} className="px-3">
+                  <ModelCard 
+                    model={model} 
+                    onClick={() => setSelectedModel(model)}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
         </div>
       </div>
 
-      <Modal
-        isOpen={!!selectedModel}
-        onClose={() => setSelectedModel(null)}
-        title={selectedModel?.name}
-      >
-        {selectedModel && (
-          <ModelDetails
-            model={selectedModel}
-            onClose={() => setSelectedModel(null)}
-          />
-        )}
-      </Modal>
+      {selectedModel && (
+        <Modal
+          isOpen={!!selectedModel}
+          onClose={() => setSelectedModel(null)}
+        >
+          <ModelDetails model={selectedModel} onClose={() => setSelectedModel(null)} />
+        </Modal>
+      )}
     </section>
   );
-}
+};
+
+export default FeaturedModels;

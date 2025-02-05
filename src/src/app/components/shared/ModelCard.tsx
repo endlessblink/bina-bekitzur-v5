@@ -1,80 +1,116 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import Button from './Button';
-import Card from './Card';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { models } from '@/lib/data/models';
+import { 
+  ChatBubbleBottomCenterTextIcon,
+  CpuChipIcon,
+  SparklesIcon,
+  PhotoIcon,
+  MusicalNoteIcon,
+  CommandLineIcon
+} from '@heroicons/react/24/outline';
+
+const fallbackIcons: { [key: string]: React.ComponentType<any> } = {
+  'chatgpt': ChatBubbleBottomCenterTextIcon,
+  'claude': ChatBubbleBottomCenterTextIcon,
+  'gemini': CpuChipIcon,
+  'azure': CpuChipIcon,
+  'mistral': SparklesIcon,
+  'llama': SparklesIcon,
+  'stable-diffusion': PhotoIcon,
+  'dalle': PhotoIcon,
+  'midjourney': PhotoIcon,
+  'musicgen': MusicalNoteIcon,
+  'bard': SparklesIcon,
+  'anthropic': ChatBubbleBottomCenterTextIcon,
+  'huggingface': CommandLineIcon
+};
 
 interface ModelCardProps {
-  model: {
-    id: string;
-    name: string;
-    slug: string;
-    shortDescription: string;
-    logoUrl?: string;
-    websiteUrl?: string;
-    pricing?: {
-      type: 'free' | 'paid' | 'freemium';
-      startingPrice?: number;
-      currency?: string;
-    };
-  };
+  model: typeof models[0];
+  onClick?: () => void;
+  className?: string;
 }
 
-export default function ModelCard({ model }: ModelCardProps) {
-  return (
-    <Card isHoverable className="flex flex-col">
-      <div className="flex items-start space-x-4 rtl:space-x-reverse p-6">
-        {model.logoUrl && (
-          <div className="flex-shrink-0">
-            <Image
-              src={model.logoUrl}
-              alt={model.name}
-              width={48}
-              height={48}
-              className="rounded-lg"
-            />
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">
-            <Link href={`/ai-tools/${model.slug}`} className="hover:underline">
-              {model.name}
-            </Link>
-          </h3>
-          <p className="mt-1 text-sm text-gray-500">{model.shortDescription}</p>
-        </div>
-      </div>
-      
-      <div className="mt-auto border-t border-gray-100 p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 rtl:space-x-reverse">
-            {model.pricing && (
-              <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium">
-                {model.pricing.type === 'free' && (
-                  <span className="text-green-700 bg-green-50 px-2 py-1 rounded-full">חינם</span>
-                )}
-                {model.pricing.type === 'paid' && (
-                  <span className="text-purple-700 bg-purple-50 px-2 py-1 rounded-full">
-                    החל מ-{model.pricing.startingPrice}
-                    {model.pricing.currency}
-                  </span>
-                )}
-                {model.pricing.type === 'freemium' && (
-                  <span className="text-blue-700 bg-blue-50 px-2 py-1 rounded-full">חינמי + פרימיום</span>
-                )}
-              </span>
-            )}
-          </div>
-          {model.websiteUrl && (
-            <Button variant="outline" size="sm" className="ml-auto rtl:mr-auto">
-              <Link href={model.websiteUrl} target="_blank" rel="noopener noreferrer">
-                בקר באתר
-              </Link>
-            </Button>
-          )}
-        </div>
-      </div>
-    </Card>
-  );
+interface IconProps {
+  model: typeof models[0];
+  className?: string;
 }
+
+const Icon: React.FC<IconProps> = ({ model, className = '' }) => {
+  const FallbackIcon = fallbackIcons[model.icon];
+
+  return (
+    <div className={`flex items-center justify-center ${className}`}>
+      {model.logoUrl ? (
+        <>
+          <img 
+            src={model.logoUrl} 
+            alt={`${model.name} logo`}
+            className="w-full h-full object-contain"
+            loading="lazy"
+            onError={(e) => {
+              const imgElement = e.currentTarget;
+              const fallbackElement = imgElement.nextElementSibling as HTMLElement;
+              if (fallbackElement) {
+                imgElement.style.display = 'none';
+                fallbackElement.style.display = 'block';
+              }
+            }}
+          />
+          {FallbackIcon && (
+            <div style={{ display: 'none' }}>
+              <FallbackIcon className="w-full h-full text-white" />
+            </div>
+          )}
+        </>
+      ) : (
+        FallbackIcon && <FallbackIcon className="w-full h-full text-white" />
+      )}
+    </div>
+  );
+};
+
+const ModelCard: React.FC<ModelCardProps> & { Icon: typeof Icon } = ({ model, onClick, className = '' }) => {
+  return (
+    <motion.div
+      onClick={onClick}
+      className={`relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl px-6 pb-8 pt-16 shadow-xl ring-1 ring-white/10 hover:ring-white/20 transition-all cursor-pointer h-[280px] flex flex-col ${className}`}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <div className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg bg-white/10 transition-all hover:bg-white/20">
+        <Icon model={model} className="w-5 h-5" />
+      </div>
+      <div className="flex flex-col flex-grow">
+        <h3 className="text-lg font-medium leading-8 tracking-tight text-white">
+          {model.name}
+        </h3>
+        <p className="mt-2 text-base leading-7 text-white/60 line-clamp-4 flex-grow">
+          {model.shortDescription}
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-full bg-purple-400/10 px-2.5 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-400/30">
+            {model.pricing.type === 'free' ? 'חינם' : 
+             model.pricing.type === 'freemium' ? 'Freemium' : 
+             'בתשלום'}
+          </span>
+          {model.categories.slice(0, 2).map((category) => (
+            <span 
+              key={category}
+              className="inline-flex items-center rounded-full bg-white/5 px-2.5 py-1 text-xs font-medium text-white/70"
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+ModelCard.Icon = Icon;
+
+export default ModelCard;
