@@ -2,19 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { OpenAI } from '@lobehub/icons';
-import {
-  ChatBubbleBottomCenterTextIcon,
-  DocumentTextIcon,
-  MusicalNoteIcon,
-  CodeBracketIcon,
-  VideoCameraIcon,
-  CubeIcon,
-  PaintBrushIcon,
-  CommandLineIcon
-} from '@heroicons/react/24/outline';
 import ModelCard from '@/app/components/shared/ModelCard';
 import { models } from '@/lib/data/models';
+import { categories } from '@/lib/data/categories';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 
 const pricingOptions = [
@@ -22,57 +12,6 @@ const pricingOptions = [
   { id: 'free', name: 'חינם' },
   { id: 'freemium', name: 'Freemium' },
   { id: 'paid', name: 'בתשלום' },
-];
-
-const categories = [
-  { 
-    id: 'language',
-    name: 'מודל שפה',
-    icon: OpenAI,
-    subcategories: ['שיחה', 'תרגום', 'סיכום', 'כתיבה']
-  },
-  {
-    id: 'chat',
-    name: 'שיחה',
-    icon: ChatBubbleBottomCenterTextIcon,
-    subcategories: ['צ\'אטבוט', 'עוזר אישי', 'תמיכה']
-  },
-  {
-    id: 'text',
-    name: 'טקסט',
-    icon: DocumentTextIcon,
-    subcategories: ['עריכה', 'תיקון', 'המרה']
-  },
-  {
-    id: 'code',
-    name: 'קוד',
-    icon: CodeBracketIcon,
-    subcategories: ['השלמת קוד', 'דיבאגינג', 'המרת קוד']
-  },
-  {
-    id: 'audio',
-    name: 'שמע',
-    icon: MusicalNoteIcon,
-    subcategories: ['מוזיקה', 'דיבור לטקסט', 'טקסט לדיבור']
-  },
-  {
-    id: 'visual',
-    name: 'ויזואלי',
-    icon: VideoCameraIcon,
-    subcategories: ['עריכת תמונות', 'יצירת תמונות', 'וידאו']
-  },
-  {
-    id: '3d',
-    name: 'תלת מימד',
-    icon: CubeIcon,
-    subcategories: ['מודלים', 'אנימציה', 'משחקים']
-  },
-  {
-    id: 'art',
-    name: 'אומנות',
-    icon: PaintBrushIcon,
-    subcategories: ['ציור', 'עיצוב', 'איור']
-  }
 ];
 
 export default function ModelsPage() {
@@ -114,13 +53,17 @@ export default function ModelsPage() {
       <div className="z-10 max-w-7xl w-full">
         <div className="text-center">
           <motion.h1 
-            className="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent"
+            className="text-4xl font-bold mb-4 text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             השוואת מודלים
           </motion.h1>
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
+            השתמשו בפילטרים כדי למצוא את המודל המתאים לכם. ניתן לסנן לפי קטגוריה, תמחור, ולחפש לפי מילות מפתח. 
+            לחצו על כרטיס המודל כדי לראות פרטים נוספים כמו יתרונות, חסרונות ודוגמאות שימוש.
+          </p>
         </div>
         
         {/* Search and Pricing Filter */}
@@ -159,7 +102,7 @@ export default function ModelsPage() {
                 <motion.button
                   key={category.id}
                   onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
-                  className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-lg transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
                     selectedCategory === category.id
                       ? 'bg-white/20 text-white'
                       : 'bg-white/5 text-gray-400 hover:bg-white/10'

@@ -23,6 +23,18 @@ export interface AIModel {
   subcategories: string[];
   featured: boolean;
   tags: string[];
+  features: string[];
+  technology: {
+    language: string;
+    framework: string;
+    specialties: string[];
+  };
+  rating: {
+    overall: number;  // 1-5
+    features: number;
+    technology: number;
+    pricing: number;
+  };
   createdAt: string;
   updatedAt: string;
 }

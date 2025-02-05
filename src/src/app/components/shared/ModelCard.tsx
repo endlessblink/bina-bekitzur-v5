@@ -15,6 +15,7 @@ import {
   BoltIcon,
   CommandLineIcon
 } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, XCircleIcon, MinusCircleIcon } from '@heroicons/react/24/outline';
 import { OpenAI } from '@lobehub/icons';
 
 interface ModelCardProps {
@@ -74,7 +75,7 @@ const AdvantagesDisadvantages = ({ advantages, disadvantages }: { advantages: st
         <ul className="space-y-2">
           {disadvantages.map((disadvantage, index) => (
             <li key={index} className="flex items-start gap-2 text-sm">
-              <XCircleIcon className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <MinusCircleIcon className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
               <span className="text-white/80">{disadvantage}</span>
             </li>
           ))}

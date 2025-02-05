@@ -87,6 +87,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן', 'תכנות'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'שיחה טבעית',
+      'הבנת הקשר',
+      'זיכרון שיחה',
+      'יצירת תוכן',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'GPT-4',
+      framework: 'Transformer',
+      specialties: ['NLP', 'Few-shot learning', 'Zero-shot learning']
+    },
+    rating: {
+      overall: 4.8,
+      features: 4.9,
+      technology: 5.0,
+      pricing: 4.5
+    }
   },
   {
     id: 'chatgpt',
@@ -119,6 +137,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'שיחה טבעית',
+      'הבנת הקשר',
+      'זיכרון שיחה',
+      'יצירת תוכן',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'GPT-4',
+      framework: 'Transformer',
+      specialties: ['NLP', 'Few-shot learning', 'Zero-shot learning']
+    },
+    rating: {
+      overall: 4.8,
+      features: 4.9,
+      technology: 5.0,
+      pricing: 4.5
+    }
   },
   {
     id: 'claude',
@@ -151,6 +187,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן', 'ניתוח'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'הבנה מעמיקה',
+      'אתיקה מובנית',
+      'יכולת הסבר',
+      'עיבוד טקסט ארוך',
+      'דיוק גבוה'
+    ],
+    technology: {
+      language: 'Claude 2',
+      framework: 'Constitutional AI',
+      specialties: ['Safety', 'Long-context', 'Reasoning']
+    },
+    rating: {
+      overall: 4.7,
+      features: 4.8,
+      technology: 4.9,
+      pricing: 4.4
+    }
   },
   {
     id: 'gemini',
@@ -183,6 +237,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן', 'ניתוח תמונות'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'יכולות מולטימודליות',
+      'אינטגרציה עם שירותי Google',
+      'מהירות עיבוד',
+      'דיוק גבוה',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'Gemini',
+      framework: 'Multimodal',
+      specialties: ['Multimodal', 'Google services integration', 'Speed']
+    },
+    rating: {
+      overall: 4.6,
+      features: 4.7,
+      technology: 4.8,
+      pricing: 4.3
+    }
   },
   {
     id: 'mistral',
@@ -215,6 +287,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן', 'קוד פתוח'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'ביצועים מעולים',
+      'יעילות גבוהה',
+      'קוד פתוח',
+      'גמישות בשימוש',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'Mistral',
+      framework: 'Efficient',
+      specialties: ['Efficiency', 'Open source', 'Flexibility']
+    },
+    rating: {
+      overall: 4.5,
+      features: 4.6,
+      technology: 4.7,
+      pricing: 4.4
+    }
   },
   {
     id: 'llama',
@@ -247,6 +337,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'כתיבת תוכן', 'קוד פתוח'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'קוד פתוח',
+      'שימוש מקומי',
+      'גמישות מלאה',
+      'ביצועים טובים',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'Llama',
+      framework: 'Open source',
+      specialties: ['Open source', 'Local deployment', 'Flexibility']
+    },
+    rating: {
+      overall: 4.5,
+      features: 4.6,
+      technology: 4.7,
+      pricing: 4.9
+    }
   },
   {
     id: 'stable-diffusion',
@@ -266,7 +374,7 @@ export const models: AIModel[] = [
     disadvantages: [
       'דורש משאבי מחשוב',
       'התקנה מורכבת',
-      'איכות משתנה',
+      'איכות לא אחידה',
       'ידע טכני נדרש',
     ],
     hasAPI: true,
@@ -279,6 +387,24 @@ export const models: AIModel[] = [
     tags: ['יצירת תמונות', 'אומנות דיגיטלית', 'קוד פתוח'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'יצירת תמונות מטקסט',
+      'מודלים מותאמים אישית',
+      'קוד פתוח',
+      'ריצה מקומית',
+      'קהילה פעילה'
+    ],
+    technology: {
+      language: 'SD XL',
+      framework: 'Latent Diffusion',
+      specialties: ['Open source', 'Custom models', 'Local deployment']
+    },
+    rating: {
+      overall: 4.5,
+      features: 4.6,
+      technology: 4.8,
+      pricing: 4.9
+    }
   },
   {
     id: 'dalle',
@@ -311,6 +437,24 @@ export const models: AIModel[] = [
     tags: ['יצירת תמונות', 'אומנות דיגיטלית'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'יצירת תמונות מטקסט',
+      'עריכת תמונות',
+      'וריאציות',
+      'סגנונות מרובים',
+      'רזולוציה גבוהה'
+    ],
+    technology: {
+      language: 'DALL-E 3',
+      framework: 'Diffusion',
+      specialties: ['Image generation', 'Style transfer', 'Inpainting']
+    },
+    rating: {
+      overall: 4.6,
+      features: 4.7,
+      technology: 4.8,
+      pricing: 4.3
+    }
   },
   {
     id: 'midjourney',
@@ -322,10 +466,11 @@ export const models: AIModel[] = [
     logoUrl: 'https://www.midjourney.com/favicon.ico',
     websiteUrl: 'https://www.midjourney.com',
     advantages: [
-      'איכות תמונה גבוהה',
-      'תמיכה בסגנונות מגוונים',
-      'קהילה פעילה',
-      'תוצאות מרשימות',
+      'איכות אומנותית גבוהה',
+      'סגנונות ייחודיים',
+      'ממשק דיסקורד',
+      'קהילה יצירתית',
+      'עדכונים תכופים',
     ],
     disadvantages: [
       'מחיר גבוה',
@@ -343,6 +488,24 @@ export const models: AIModel[] = [
     tags: ['יצירת תמונות', 'אומנות דיגיטלית'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'איכות אומנותית גבוהה',
+      'סגנונות ייחודיים',
+      'ממשק דיסקורד',
+      'קהילה יצירתית',
+      'עדכונים תכופים'
+    ],
+    technology: {
+      language: 'V6',
+      framework: 'Custom Diffusion',
+      specialties: ['Artistic style', 'Composition', 'Detail']
+    },
+    rating: {
+      overall: 4.7,
+      features: 4.8,
+      technology: 4.7,
+      pricing: 4.2
+    }
   },
   {
     id: 'musicgen',
@@ -360,7 +523,7 @@ export const models: AIModel[] = [
       'חינמי לשימוש',
     ],
     disadvantages: [
-      'איכות משתנה',
+      'איכות לא אחידה',
       'הגבלות אורך',
       'דורש ידע מוזיקלי',
       'מגבלות טכניות',
@@ -375,6 +538,24 @@ export const models: AIModel[] = [
     tags: ['מוזיקה', 'אודיו', 'קוד פתוח'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'יצירת מוזיקה מקורית',
+      'מגוון סגנונות',
+      'קוד פתוח',
+      'חינמי לשימוש',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'MusicGen',
+      framework: 'Open source',
+      specialties: ['Music generation', 'Text-to-music', 'Open source']
+    },
+    rating: {
+      overall: 4.5,
+      features: 4.6,
+      technology: 4.7,
+      pricing: 4.9
+    }
   },
   {
     id: 'heygen',
@@ -406,6 +587,24 @@ export const models: AIModel[] = [
     tags: ['שפה טבעית', 'ניתוח טקסט', 'מחקר'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'איכות וידאו גבוהה',
+      'מגוון דוברים וירטואליים',
+      'תמיכה בשפות רבות',
+      'ממשק ידידותי',
+      'תמיכה בסגנונות מגוונים'
+    ],
+    technology: {
+      language: 'HeyGen',
+      framework: 'Virtual speakers',
+      specialties: ['Video generation', 'Virtual speakers', 'Multilingual support']
+    },
+    rating: {
+      overall: 4.6,
+      features: 4.7,
+      technology: 4.6,
+      pricing: 4.2
+    }
   },
   {
     id: 'mubert',
@@ -437,5 +636,23 @@ export const models: AIModel[] = [
     tags: ['יצירת מוזיקה', 'אומנות', 'עיצוב'],
     createdAt: '2024-02-05T00:00:00Z',
     updatedAt: '2024-02-05T00:00:00Z',
+    features: [
+      'יצירת מוזיקה מקורית',
+      'מגוון סגנונות',
+      'ממשק פשוט לשימוש',
+      'אפשרויות ייצוא מגוונות',
+      'תמיכה בשפות רבות'
+    ],
+    technology: {
+      language: 'Mubert',
+      framework: 'Music generation',
+      specialties: ['Music generation', 'Multilingual support', 'Simple interface']
+    },
+    rating: {
+      overall: 4.5,
+      features: 4.6,
+      technology: 4.5,
+      pricing: 4.3
+    }
   },
 ];

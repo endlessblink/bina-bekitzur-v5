@@ -15,7 +15,14 @@ const navigation = [
     ]
   },
   { name: 'פודקאסט חופרים בינה', href: '/podcast' },
-  { name: 'השוואת מודלים', href: '/models' },
+  { 
+    name: 'השוואת מודלים',
+    href: '/models',
+    dropdown: [
+      { name: 'כל המודלים', href: '/models' },
+      { name: 'מודלים מובילים', href: '/models/top' }
+    ]
+  },
   { 
     name: 'עוד תוכן',
     href: '#',

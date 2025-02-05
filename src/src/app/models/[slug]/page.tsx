@@ -1,19 +1,21 @@
 'use client';
 
+import { use } from 'react';
 import { notFound } from 'next/navigation';
 import ModelCard from '@/app/components/shared/ModelCard';
 import AdvantagesDisadvantages from '@/app/components/shared/AdvantagesDisadvantages';
 import { models } from '@/lib/data/models';
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default function ModelPage({ params }: Props) {
+  const { slug } = use(params);
   // Find the model from our static data
-  const model = models.find(m => m.id === params.slug);
+  const model = models.find(m => m.slug === slug);
 
   if (!model) {
     notFound();
