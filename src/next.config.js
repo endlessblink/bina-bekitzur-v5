@@ -62,6 +62,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'mubert.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
       }
     ],
     dangerouslyAllowSVG: true,
