@@ -24,6 +24,7 @@ export function PodcastPlayer({ episode, compact = false }: PodcastPlayerProps) 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [prevVolume, setPrevVolume] = useState<number | null>(null);
   const [isVolumeVisible, setIsVolumeVisible] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const volumeTimeoutRef = useRef<NodeJS.Timeout>();
@@ -97,26 +98,25 @@ export function PodcastPlayer({ episode, compact = false }: PodcastPlayerProps) 
   };
 
   const handleVolumeIconClick = () => {
+    if (volume === 0) {
+      setVolume(prevVolume || 0.5);
+      if (audioRef.current) {
+        audioRef.current.volume = prevVolume || 0.5;
+      }
+    } else {
+      setPrevVolume(volume);
+      setVolume(0);
+      if (audioRef.current) {
+        audioRef.current.volume = 0;
+      }
+    }
     setIsVolumeVisible(true);
-    // Hide volume slider after 3 seconds of inactivity
     if (volumeTimeoutRef.current) {
       clearTimeout(volumeTimeoutRef.current);
     }
     volumeTimeoutRef.current = setTimeout(() => {
       setIsVolumeVisible(false);
     }, 3000);
-  };
-
-  const toggleMute = () => {
-    if (audioRef.current) {
-      if (audioRef.current.volume > 0) {
-        audioRef.current.volume = 0;
-        setVolume(0);
-      } else {
-        audioRef.current.volume = 1;
-        setVolume(1);
-      }
-    }
   };
 
   return (

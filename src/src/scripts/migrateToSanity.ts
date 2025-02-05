@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client';
 import { Model } from '@/types';
+import models from '@/lib/data/models';
 
 interface SanityDocument {
   _type: string;
@@ -17,8 +18,6 @@ const client = createClient({
 
 async function migrateModels() {
   try {
-    const models: Model[] = require('@/lib/data/models');
-
     for (const model of models) {
       const doc: SanityDocument = {
         _type: 'model',
