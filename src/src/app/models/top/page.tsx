@@ -11,6 +11,7 @@ import { models } from '@/lib/data/models';
 import { categories } from '@/lib/data/categories';
 import ModelCard from '@/app/components/shared/ModelCard';
 import LoadingAnimation from '@/app/components/shared/LoadingAnimation';
+import Image from 'next/image';
 
 interface CategoryImages {
   [key: string]: string[];
@@ -123,11 +124,12 @@ const TopModelsPage = () => {
                           transition={{ duration: 0.3 }}
                           className="absolute inset-0"
                         >
-                          <img
+                          <Image
                             src={categoryImages[category.id][index]}
                             alt={`${category.name} cover ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            style={{ minHeight: '200px' }}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         </motion.div>
                       )}

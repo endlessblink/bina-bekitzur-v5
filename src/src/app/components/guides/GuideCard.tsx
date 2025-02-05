@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { PlayCircleIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
+import Image from 'next/image';
 import { YouTubeVideo } from '@/app/api/youtube/guides/route';
+import { PlayCircleIcon } from '@heroicons/react/24/solid';
 
 interface GuideCardProps {
   video: YouTubeVideo;
@@ -27,11 +30,13 @@ const GuideCard = ({ video }: GuideCardProps) => {
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
-      <div className="relative aspect-video">
-        <img
+      <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4">
+        <Image
           src={video.thumbnail}
           alt={video.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
           <PlayCircleIcon className="w-16 h-16 text-white" />

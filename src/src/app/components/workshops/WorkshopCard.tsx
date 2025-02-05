@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Workshop } from '@/lib/data/workshops';
 
 interface WorkshopCardProps {
@@ -19,12 +20,14 @@ const WorkshopCard = ({ workshop }: WorkshopCardProps) => {
         whileHover={{ scale: 1.02 }}
       >
         {/* Cover Image */}
-        <div className="relative aspect-video">
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-          <img
+          <Image
             src={workshop.coverImage}
             alt={workshop.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute bottom-4 right-4 z-20">
             <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm">

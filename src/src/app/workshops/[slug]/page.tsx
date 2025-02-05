@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 import { workshops } from '@/lib/data/workshops';
+import Image from 'next/image';
 
 export default function WorkshopPage() {
   const { slug } = useParams();
@@ -24,12 +25,15 @@ export default function WorkshopPage() {
         transition={{ duration: 0.5 }}
       >
         {/* Header */}
-        <div className="relative aspect-[2/1] mb-8 rounded-lg overflow-hidden">
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8">
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10" />
-          <img
+          <Image
             src={workshop.coverImage}
             alt={workshop.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
           />
           <div className="absolute bottom-8 right-8 z-20 max-w-2xl">
             <h1 className="text-4xl font-bold text-white mb-4">{workshop.title}</h1>

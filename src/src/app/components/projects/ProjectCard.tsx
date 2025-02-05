@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
 import { PlayCircleIcon } from '@heroicons/react/24/solid';
 import { YouTubeVideo } from '@/app/api/youtube/projects/route';
 
@@ -30,11 +32,13 @@ const ProjectCard = ({ video }: ProjectCardProps) => {
         className="block relative group"
       >
         {/* Thumbnail */}
-        <div className="relative aspect-video">
-          <img
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4">
+          <Image
             src={video.thumbnail}
             alt={video.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <PlayCircleIcon className="w-16 h-16 text-white" />
