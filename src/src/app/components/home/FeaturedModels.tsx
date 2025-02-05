@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -15,10 +14,9 @@ import ModelCard from '../shared/ModelCard';
 
 interface ModelDetailsProps {
   model: typeof models[0];
-  onClose: () => void;
 }
 
-function ModelDetails({ model, onClose }: ModelDetailsProps) {
+function ModelDetails({ model }: ModelDetailsProps) {
   return (
     <div className="text-white text-right" dir="rtl">
       <div className="flex items-center gap-4 mb-6">
@@ -148,7 +146,7 @@ const FeaturedModels: React.FC = () => {
           isOpen={!!selectedModel}
           onClose={() => setSelectedModel(null)}
         >
-          <ModelDetails model={selectedModel} onClose={() => setSelectedModel(null)} />
+          <ModelDetails model={selectedModel} />
         </Modal>
       )}
     </section>

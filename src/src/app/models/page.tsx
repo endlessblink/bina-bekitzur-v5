@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import ModelCard from '@/app/components/shared/ModelCard'
 import { Model } from '@/types'
 import { getModels } from '@/lib/sanity/hooks'
-import { motion } from 'framer-motion'
 import { useDebounce } from '@/lib/hooks/useDebounce'
 import { getCategories } from '@/lib/sanity/hooks'
 import { Category } from '@/types'
@@ -21,7 +20,6 @@ export default function ModelsPage() {
   const [selectedModels, setSelectedModels] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedPricing, setSelectedPricing] = useState('all')
   const debouncedSearchQuery = useDebounce(searchQuery, 300)
 
   useEffect(() => {

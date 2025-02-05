@@ -27,10 +27,14 @@ interface RSSItem {
   };
 }
 
-const CACHE_KEY = 'latest_podcast';
+interface ParserOutput {
+  items: RSSItem[];
+}
+
+const CACHE_KEY = 'latest_podcast_episode';
 const CACHE_DURATION = 3600; // 1 hour
 
-const parser = new Parser<any, RSSItem>({
+const parser = new Parser<ParserOutput, RSSItem>({
   customFields: {
     item: [
       ['enclosure', 'enclosure'],

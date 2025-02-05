@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     
     try {
       responseData = JSON.parse(responseText);
-    } catch (e) {
+    } catch {
       console.error('Failed to parse response as JSON:', responseText);
       responseData = { message: responseText };
     }
